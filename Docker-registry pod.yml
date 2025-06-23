@@ -1,11 +1,23 @@
+# Specifies the API version for the Kubernetes object
 apiVersion: v1
+
+# Declares the type of Kubernetes object (Pod)
 kind: Pod
+
+# Metadata contains data that helps uniquely identify the object
 metadata:
+  # Name of the Pod
   name: docker-pod
+
+# Specification of the Pod's desired state
 spec:
+  # List of containers to run in the Pod
   containers:
-  - name: dock-container
-    image: httpd
-    envFrom:
-    - secretRef:
-        name: docker-secret
+    # Definition of the first container
+    - name: dock-container   # Name of the container
+      image: httpd           # Docker image to use for this container
+
+      # Import all environment variables from the specified Secret
+      envFrom:
+        - secretRef:
+            name: docker-secret # Name of the Secret resource to import environment variables from
