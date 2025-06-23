@@ -1,0 +1,34 @@
+# Specifies the API version for the Kubernetes object
+apiVersion: v1
+
+# Declares the type of Kubernetes object (Pod)
+kind: Pod
+
+# Metadata contains data that helps uniquely identify the object
+metadata:
+  # Name of the Pod
+  name: generic-pod
+
+# Specification of the Pod's desired state
+spec:
+  # List of containers to run in the Pod
+  containers:
+    # Definition of the first container
+    - name: normal-gen-cont    # Name of the container
+      image: nginx:latest      # Docker image to use for this container
+
+      # Environment variables to set in the container
+      env:
+        # Username environment variable, value taken from a Kubernetes Secret
+        - name: Username
+          valueFrom:
+            secretKeyRef:
+              name: generic-secret # Name of the Secret resource
+              key: username       # Key in the Secret to use as value
+
+        # Password environment variable, value taken from a Kubernetes Secret
+        - name: Password
+          valueFrom:
+            secretKeyRef:
+              name: generic-secret # Name of the Secret resource
+              key: password       # Key in the Secret to use as value

@@ -1,0 +1,46 @@
+# Specifies the API version for the Kubernetes object
+apiVersion: v1
+
+# Declares the type of Kubernetes object (Pod)
+kind: Pod
+
+# Metadata contains data that helps uniquely identify the object
+metadata:
+  # Name of the Pod
+  name: tls-pod
+
+# Specification of the Pod's desired state
+spec:
+  # List of containers to run in the Pod
+  containers:
+    # Definition of the first container
+    - name: tls-container # Name of the container
+      image: nginx        # Docker image to use for this container
+
+      # Environment variables to set in the container
+      env:
+        # TLS_CERT environment variable, value taken from a Kubernetes Secret
+        - name: TLS_CERT
+          valueFrom:
+            secretKeyRef:
+              name: my-tls-secret # Name of the Secret resource
+              key: tls.crt        # Key in the Secret to use as value
+
+        # TLS_KEY environment variable, value taken from a Kubernetes Secret
+        - name: TLS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: my-tls-secret # Name of the Secret resource
+              key: tls.key        # Key in the Secret to use as value
+
+      # Mounts a volume into the container's filesystem
+      volumeMounts:
+        - name: pendrive           # Name of the volume to mount
+          mountPath: /etc/cert-data # Path inside the container where the volume is mounted
+
+  # List of volumes that can be mounted by containers in this Pod
+  volumes:
+    # Definition of a volume sourced from a Secret
+    - name: pendrive              # Name of the volume
+      secret:
+        secretName: my-tls-secret # Name of the Secret to use as the volume source

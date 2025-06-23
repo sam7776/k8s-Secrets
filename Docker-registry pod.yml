@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: docker-pod
+spec:
+  containers:
+  - name: dock-container
+    image: httpd
+    envFrom:
+    - secretRef:
+        name: docker-secret
